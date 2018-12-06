@@ -109,7 +109,7 @@ if ($token != null) {
       $data = $tw->FetchTxDetail($token, $arr['reportID']);
       
       // Transaction ID
-      $tx['id'] = $txData['section4']['column2']['cell1']['value'];
+      $tx['id'] = $data['section4']['column2']['cell1']['value'];
       
       // Amount
       $tx['amount'] = str_replace(',', '', $data['section3']['column1']['cell1']['value']);
