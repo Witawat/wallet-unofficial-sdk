@@ -18,6 +18,19 @@ $token = $tw->GetToken('0698765432', '1234', 'phone');
 $tw->Logout($token);
 ```
 
+This is an example to topup your balance with TrueMoney Cashcard
+```php
+use Maythiwat\WalletAPI;
+require_once(__DIR__ . '/WalletAPI.php');
+$tw = new WalletAPI();
+$token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
+
+if ($token != null) {
+  $tw->CashcardTopup($token, '12345678901234');
+  $tw->Logout($token);
+}
+```
+
 ## Support this project
 You can support this project by make a donation to project developer
 - [Paypal (paypal.me/maythidem)](https://www.paypal.me/maythidem)
