@@ -18,7 +18,7 @@ $token = $tw->GetToken('0698765432', '1234', 'phone');
 $tw->Logout($token);
 ```
 
-This is an example to fetch transactions/activities in your account
+This is an example to fetch your profile details
 ```php
 use Maythiwat\WalletAPI;
 require_once(__DIR__ . '/WalletAPI.php');
@@ -29,17 +29,8 @@ $token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
 
 // If successfully login
 if ($token != null) {
-  
-  // Transaction date range
-  $start_date = date('Y-m-d', strtotime('-1 days'));
-  $end_date = date('Y-m-d', strtotime('1 days'));
-  
-  // Perform Fetch
-  $activities = $wallet->FetchActivities($token, $start_date, $end_date);
-  
-  foreach($activities as $arr) {
-    var_dump($arr);
-  }
+  // Fetch Profile
+  var_dump($tw->GetProfile($token));
   
   // Logout
   $tw->Logout($token);
@@ -59,6 +50,73 @@ $token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
 if ($token != null) {
   // Perform topup request
   $tw->CashcardTopup($token, '12345678901234');
+  
+  // Logout
+  $tw->Logout($token);
+}
+```
+
+This is an example to fetch transactions/activities in your account
+```php
+use Maythiwat\WalletAPI;
+require_once(__DIR__ . '/WalletAPI.php');
+$tw = new WalletAPI();
+
+// Login
+$token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
+
+// If successfully login
+if ($token != null) {
+  
+  // Transaction date range
+  $start_date = date('Y-m-d', strtotime('-1 days'));
+  $end_date = date('Y-m-d', strtotime('1 days'));
+  
+  // Perform Fetch
+  $activities = $tw->FetchActivities($token, $start_date, $end_date);
+  
+  foreach($activities as $arr) {
+    var_dump($arr);
+  }
+  
+  // Logout
+  $tw->Logout($token);
+}
+```
+
+You can also create a **simple** Transaction ID checker (for receiving money)
+```php
+use Maythiwat\WalletAPI;
+require_once(__DIR__ . '/WalletAPI.php');
+$tw = new WalletAPI();
+
+// Login
+$token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
+
+// If successfully login
+if ($token != null) {
+  
+  // Transaction date range
+  $start_date = date('Y-m-d', strtotime('-1 days'));
+  $end_date = date('Y-m-d', strtotime('1 days'));
+  
+  // Perform Fetch
+  $activities = $tw->FetchActivities($token, $start_date, $end_date);
+  
+  foreach($activities as $arr) {
+    // Check is paid-in
+    if ($arr['text3En'] == 'creditor') {
+      $data = $tw->FetchTxDetail($token, $arr['reportID']);
+      
+      // Transaction ID
+      $tx['id'] = $txData['section4']['column2']['cell1']['value'];
+      
+      // Amount
+      $tx['amount'] = str_replace(',', '', $data['section3']['column1']['cell1']['value']);
+      
+      // Then you can check user input and connect to database.
+    }
+  }
   
   // Logout
   $tw->Logout($token);
