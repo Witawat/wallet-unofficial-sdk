@@ -13,10 +13,10 @@ class WalletAPI {
         return curl_exec($ch);
     }
 
-    public function GetToken($user, $pass) {
+    public function GetToken($user, $pass, $type = 'email') {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/signin";
         $header = array("Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json");
-        $data = array("username"=>$user, "password"=>sha1($user.$pass), "type"=>"email");
+        $data = array("username"=>$user, "password"=>sha1($user.$pass), "type"=>$type);
         return @json_decode($this->Request($url, $header, json_encode($data)), true)['data']['accessToken'];
     }
     
