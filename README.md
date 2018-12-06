@@ -5,7 +5,7 @@ Unofficial API for TrueMoney Wallet Application
 This is an example to Login and Logout
 ```php
 use Maythiwat\WalletAPI;
-require_once('WalletAPI.php');
+require_once(__DIR__ . '/WalletAPI.php');
 $tw = new WalletAPI();
 
 // Login with Email & Password
