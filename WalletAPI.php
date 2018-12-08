@@ -26,6 +26,12 @@ class WalletAPI {
         $header = array("Host: mobile-api-gateway.truemoney.com");
         return @json_decode($this->Request('GET', $url, $header, false), true);
     }
+    
+    public function GetCurrentBalance($token) {
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/profile/balance/{$token}";
+        $header = array("Host: mobile-api-gateway.truemoney.com");
+        return @json_decode($this->Request('GET', $url, $header, false), true)['data'];
+    }
 
     public function GetProfile($token) {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/profile/{$token}";
