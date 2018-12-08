@@ -18,6 +18,25 @@ $token = $tw->GetToken('0698765432', '1234', 'phone');
 $tw->Logout($token);
 ```
 
+This is an example to fetch your account balance
+```php
+use Maythiwat\WalletAPI;
+require_once(__DIR__ . '/WalletAPI.php');
+$tw = new WalletAPI();
+
+// Login
+$token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
+
+// If successfully login
+if ($token != null) {
+  // Fetch Balance
+  echo $tw->GetCurrentBalance($token);
+  
+  // Logout
+  $tw->Logout($token);
+}
+```
+
 This is an example to fetch your profile details
 ```php
 use Maythiwat\WalletAPI;
