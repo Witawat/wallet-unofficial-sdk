@@ -40,14 +40,14 @@ class WalletAPI {
     }
 
     public function FetchActivities($token, $start, $end, $limit = 25) {
-        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/profile/transactions/history/{$token}/?startDate={$start}&endDate={$end}&limit={$limit}";
-        $header = array("Host: mobile-api-gateway.truemoney.com");
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/user-profile-composite/v1/users/transactions/history?start_date={$start}&end_date={$end}&limit={$limit}";
+        $header = array("Host: mobile-api-gateway.truemoney.com", "Authorization: {$token}");
         return @json_decode($this->Request('GET', $url, $header, false), true)['data']['activities'];
     }
 
     public function FetchTxDetail($token, $id) {
-        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/profile/activities/{$id}/detail/{$token}";
-        $header = array("Host: mobile-api-gateway.truemoney.com");
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/user-profile-composite/v1/users/transactions/history/detail/{$id}";
+        $header = array("Host: mobile-api-gateway.truemoney.com", "Authorization: {$token}");
         return @json_decode($this->Request('GET', $url, $header, false), true)['data'];
     }
 
