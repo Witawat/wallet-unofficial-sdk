@@ -124,8 +124,8 @@ if ($token != null) {
   
   foreach($activities as $arr) {
     // Check is paid-in
-    if ($arr['text3En'] == 'creditor') {
-      $data = $tw->FetchTxDetail($token, $arr['reportID']);
+    if ($arr['original_action'] == 'creditor') {
+      $data = $tw->FetchTxDetail($token, $arr['report_id']);
       
       // Transaction ID
       $tx['id'] = $data['section4']['column2']['cell1']['value'];
