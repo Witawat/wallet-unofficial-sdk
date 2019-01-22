@@ -1,30 +1,37 @@
 <?php
 namespace Maythiwat;
 class WalletAPI {
-    public function Request($method = 'GET', $url, $header = false, $data = false) {
+    public function Request($method = 'GET', $url, $header = false, $data = false, $ua = false) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'okhttp/3.8.0');
+        curl_setopt($ch, CURLOPT_USERAGENT, (!$ua) ? 'okhttp/3.8.0' : $ua);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, (!$header) ? false : $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, (!$data) ? false : $data);
-        return curl_exec($ch);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
     }
-
-    public function GetToken($user, $pass, $type = 'email') {
+    
+    public function Login($user, $pass, $type = 'email') {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/signin";
         $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
         $data = ["username"=>$user, "password"=>sha1($user.$pass), "type"=>$type];
-        return @json_decode($this->Request('POST', $url, $header, json_encode($data)), true)['data']['accessToken'];
+        return @json_decode($this->Request('POST', $url, $header, json_encode($data)), true);
     }
     
     public function Logout($token) {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/signout/{$token}";
         $header = ["Host: mobile-api-gateway.truemoney.com"];
         return @json_decode($this->Request('GET', $url, $header, false), true);
+    }
+    
+    public function GetToken($user, $pass, $type = 'email') {
+        $res = $this->Login($user, $pass, $type);
+        return (isset($res['data']['accessToken'])) ? $res['data']['accessToken'] : null;
     }
     
     public function GetCurrentBalance($token) {
