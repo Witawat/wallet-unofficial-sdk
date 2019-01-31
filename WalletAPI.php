@@ -71,14 +71,14 @@ class WalletAPI {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/buy/e-pin/draft/verifyAndCreate/{$token}";
         $data = ["recipientMobileNumber"=>$mobile, "amount"=>$amount];
         $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
-        return @json_decode($this->Request('POST', $url, $header, $data), true);
+        return @json_decode($this->Request('POST', $url, $header, json_encode($data)), true);
     }
     
     public function CashcardBuyComfirm($token, $draft, $mobile, $otpString, $otpRefCode) {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/buy/e-pin/confirm/{$draft}/{$token}";
         $data = ["mobileNumber"=>$mobile, "otpString"=>$otpString, "otpRefCode"=>$otpRefCode, "timestamp"=>time()];
         $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
-        return @json_decode($this->Request('PUT', $url, $header, $data), true);
+        return @json_decode($this->Request('PUT', $url, $header, json_encode($data)), true);
     }
 }
 ?>
