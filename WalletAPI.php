@@ -26,7 +26,7 @@ class WalletAPI {
     public function Logout($token) {
         $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/signout/{$token}";
         $header = ["Host: mobile-api-gateway.truemoney.com"];
-        return @json_decode($this->Request('GET', $url, $header, false), true);
+        return @json_decode($this->Request('POST', $url, $header, false), true);
     }
     
     public function GetToken($user, $pass, $type = 'email') {
