@@ -80,5 +80,33 @@ class WalletAPI {
         $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
         return @json_decode($this->Request('PUT', $url, $header, json_encode($data)), true);
     }
+    
+    public function TransactionDraft($token, $target, $amount) {
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/transfer/draft-transaction/{$token}";
+        $data = ["mobileNumber"=>$target, "amount"=>$amount, "timestamp"=>time()];
+        $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
+        return @json_decode($this->Request('POST', $url, $header, json_encode($data)), true);
+    }
+    
+    public function TransactionVerify($token, $draft, $message) {
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/transfer/draft-transaction/{$draft}/send-otp/{$token}";
+        $data = ["personalMessage"=>$message, "timestamp"=>time()];
+        $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
+        return @json_decode($this->Request('PUT', $url, $header, json_encode($data)), true);
+    }
+    
+    public function TransactionConfirm($token, $draft, $sender, $otpString, $otpRefCode) {
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/transfer/transaction/{$draft}/{$token}";
+        $data = ["mobileNumber"=>$sender, "otpString"=>$otpString, "otpRefCode"=>$otpRefCode, "timestamp"=>time()];
+        $header = ["Host: mobile-api-gateway.truemoney.com", "Content-Type: application/json"];
+        return @json_decode($this->Request('POST', $url, $header, json_encode($data)), true);
+    }
+    
+    public function TransactionStatus($token, $draft) {
+        $url = "https://mobile-api-gateway.truemoney.com/mobile-api-gateway/api/v1/transfer/transaction/{$draft}/{$token}";
+        $header = ["Host: mobile-api-gateway.truemoney.com"];
+        return @json_decode($this->Request('GET', $url, $header), true);
+    }
+    
 }
 ?>
