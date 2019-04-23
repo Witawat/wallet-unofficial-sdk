@@ -30,8 +30,8 @@ $token = $tw->GetToken('email@provider.com', 'your_p@ssw0rd');
 // If successfully login
 if ($token != null) {
   // Fetch Balance
-  echo $tw->GetCurrentBalance($token);
-  
+  $vd = $tw->GetCurrentBalance($token);  
+  echo $vd["currentBalance"];  
   // Logout
   $tw->Logout($token);
 }
